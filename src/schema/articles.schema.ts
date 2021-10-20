@@ -18,8 +18,8 @@ export class Articles {
   @Prop()
   content: string;
 
-  @Prop()
-  comment_ids: mongoose.Types.ObjectId;
+  @Prop({ type: mongoose.Types.ObjectId })
+  comment_ids: object;
 
   @Prop()
   tags: string[];

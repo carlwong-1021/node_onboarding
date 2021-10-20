@@ -1,8 +1,8 @@
 import { Articles, ArticlesDocument } from './../schema/articles.schema';
 import { Model } from 'mongoose';
-import * as mongoose from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { ArticleDto } from './dto/article.dto';
 
 @Injectable()
 export class ArticlesService {
@@ -19,12 +19,12 @@ export class ArticlesService {
     return this.articleModel.findOne(query).exec();
   }
 
-  async addArticles(article): Promise<Articles> {
+  async addArticles(article: ArticleDto): Promise<Articles> {
     const createdArticle = new this.articleModel(article);
     return createdArticle.save();
   }
 
-  async updateArticles(id: string, article): Promise<Articles> {
+  async updateArticles(id: string, article: ArticleDto): Promise<Articles> {
     const filter: any = { _id: id };
     return this.articleModel.findOneAndUpdate(filter, article).exec();
   }

@@ -1,4 +1,5 @@
 import { ArticlesService } from './articles.service';
+import { present, presentCollection } from '../entities/articles.entity';
 import {
   Controller,
   Delete,
@@ -8,29 +9,49 @@ import {
   Body,
   Param,
 } from '@nestjs/common';
+import { ArticleDto } from './dto/article.dto';
 
-@Controller('articles')
+@Controller('api/articles')
 export class ArticlesController {
   constructor(private articlesService: ArticlesService) {}
 
   @Get()
-  getArticles() {
-    return this.articlesService.getArticles();
+  async getArticles() {
+    const result = await this.articlesService.getArticles();
+    return presentCollection(result);
   }
 
   @Get(':id')
-  getArticlesById(@Param() params) {
-    return this.articlesService.getArticlesById(params.id);
+  async getArticlesById(@Param() params) {
+    try {
+      const result = await this.articlesService.getArticlesById(params.id);
+      if (result) return present(result);
+      return {
+        message: 'article not exist!',
+        code: '001',
+      };
+    } catch (e) {
+      console.log(e);
+      return {
+        message: 'article id not correct!',
+        code: '001',
+      };
+    }
   }
 
   @Post()
-  addArticles(@Body() article) {
-    return this.articlesService.addArticles(article);
+  async addArticles(@Body() articleDto: ArticleDto) {
+    const result = await this.articlesService.addArticles(articleDto);
+    return present(result);
   }
 
   @Put(':id')
-  async updateArticles(@Param() params, @Body() article) {
-    return this.articlesService.updateArticles(params.id, article);
+  async updateArticles(@Param() params, @Body() articleDto: ArticleDto) {
+    const result = await this.articlesService.updateArticles(
+      params.id,
+      articleDto,
+    );
+    return present(result);
   }
 
   @Delete(':id')
