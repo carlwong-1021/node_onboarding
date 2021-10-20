@@ -4,9 +4,7 @@ import { ArticlesModule } from './articles/articles.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb://admin:admin@localhost:27017/onboarding?authSource=admin&readPreference=primary',
-    ),
+    MongooseModule.forRoot('mongodb://localhost:27017/onboarding'),
     ArticlesModule,
   ],
   controllers: [],
